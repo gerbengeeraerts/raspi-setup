@@ -13,7 +13,7 @@
 Either copy this file over to your raspi or clone this repo.  
 It's recommended to copy or clone it in the homedir `cd ~`  
 
-Run `./install.sh`, if file is not executable, chmod it  
+Run `sudo ./install.sh`, if file is not executable, chmod it  
 with `chmod +x install.sh` and run again.
 
 Let the script run and install dependencies & packages.  
