@@ -10,17 +10,31 @@ magenta='\033[0;35m'
 cyan='\033[0;36m'
 
 
-alias Reset="tput sgr0"      #  Reset text attributes to normal
-#+ without clearing screen.
+alias Reset="tput sgr0" #Reset text attributes to default without clearing screen.
 
 # Color-echo.
 # Argument $1 = message
 # Argument $2 = Color
 cecho() {
   echo "${2}${1}"
-  Reset # Reset to normal.
+  Reset
   return
 }
+
+echo ""
+cecho "===================================================" $white
+cecho "Create a log for commands executed in this setup? (y/n)" $blue
+cecho "===================================================" $white
+read -r response
+case $response in
+  [yY])
+    echo ""
+    cecho "Logging setup to rpi_bslog.txt in ~/" $yellow
+    touch ~/rpi_bslog.txt # log
+    sleep 1s
+    break;;
+  *) break;;
+esac
 
 echo ""
 cecho "===================================================" $white
@@ -31,8 +45,9 @@ case $response in
   [yY])
     echo ""
     cecho "Creating .hushlogin in ~/" $yellow
-    touch ~/hushlogin
-    sleep 2s
+    echo "touch ~/.hushlogin" > ~/rpi_bslog.txt # log
+    touch ~/.hushlogin
+    sleep 1s
     break;;
   *) break;;
 esac
@@ -46,18 +61,16 @@ case $response in
   [yY])
     echo ""
     cecho "Creating .bash_aliases in ~/" $yellow
+    echo "touch ~/.bash_aliases" >> ~/rpi_bslog.txt # log
     touch ~/.bash_aliases
 
     echo ""
     cecho "Writing sudo apt-get alias to file..." $yellow
     echo "alias apt-get=\"sudo apt-get\"" > ~/.bash_aliases
-    sleep 2s
+    sleep 1s
     cecho "Writing al alias for editing aliasfile to file..." $yellow
-    echo "alias al=\"sudo nano ~/.bash_aliases\"" >> ~/.bash_aliases
-    sleep 2s
-    echo ""
-    cecho "Reloading the shell to apply changes" $yellow
-    exec $SHELL -l
+    echo "alias al=\"nano ~/.bash_aliases\"" >> ~/.bash_aliases
+    sleep 1s
     break;;
   *) break;;
 esac
@@ -71,9 +84,11 @@ case $response in
   [yY])
     echo ""
     cecho "Installing avahi" $yellow
-    apt-get install avahi-daemon
+    echo "sudo apt-get install avahi-daemon" >> ~/rpi_bslog.txt #log
+    sudo apt-get install avahi-daemon
     sleep 2s
-    apt-get install netatalk
+    echo "sudo apt-get install netatalk" >> ~/rpi_bslog.txt #log
+    sudo apt-get install netatalk
     break;;
   *) break;;
 esac
@@ -87,8 +102,8 @@ case $response in
   [yY])
     echo ""
     cecho "Installing pip3..." $yellow
-    apt-get install python3-pip
-    sleep 2s
+    echo "sudo apt-get install python3-pip" >> ~/rpi_bslog.txt #log
+    sudo apt-get install python3-pip
     break;;
   *) break;;
 esac
@@ -107,9 +122,54 @@ case $response in
       libapache2-mod-php5
       mysql
     )
-    cecho "Insalling all packages..." $yellow
-    apt-get install ${packages[@]}
-    sleep 2s
+    echo ""
+    cecho "Installing all packages..." $yellow
+    echo "apt-get install ${packages[@]}" >> ~/rpi_bslog.txt #log
+    sudo apt-get install ${packages[@]}
+  break;;
+  *) break;;
+esac
+
+echo ""
+cecho "===================================================" $white
+cecho "Install node & npm? (y/n)?" $blue
+cecho "===================================================" $white
+read -r response
+case $response in
+  [yY])
+  echo ""
+  cecho "Downloading latest package from node-arm…" $yellow
+  echo "wget -P /tmp http://node-arm.herokuapp.com/node_latest_armhf.deb" >> ~/rpi_bslog.txt #log
+  wget -P /tmp http://node-arm.herokuapp.com/node_latest_armhf.deb
+  cecho "Unpacking and installing package…" $yellow
+  echo "sudo dpkg -i tmp/node_latest_armhf.deb" >> ~/rpi_bslog.txt #log
+  sudo dpkg -i tmp/node_latest_armhf.deb
+  cecho "Checking if install worked. If no version number" $yellow
+  cecho "is listed, install failed."
+  echo "node -v" >> ~/rpi_bslog.txt #log
+  node -v
+  sleep 2s
+  break;;
+  *) break;;
+esac
+
+echo ""
+cecho "===================================================" $white
+cecho "Install common node modules? (y/n)?" $blue
+cecho "This will take very long, continue?" $red
+cecho "===================================================" $white
+read -r response
+case $response in
+  [yY])
+  node_modules=(
+    bower
+    gulp
+    grunt
+  )
+  echo ""
+  cecho "Installing modules… Takes a while, don't shut down" $yellow
+  echo "sudo npm install -g ${node_modules[@]}" >> ~/rpi_bslog.txt #log
+  sudo npm install -g ${node_modules[@]}
   break;;
   *) break;;
 esac
@@ -117,31 +177,40 @@ esac
 echo ""
 cecho "===================================================" $white
 cecho "Update and upgrade rpi? (y/n)" $blue
-cecho "Restart your rpi when done" $blue
+cecho "This will overwrite custom kernel" $red
+cecho "Restart your rpi when done" $red
 cecho "===================================================" $white
 read -r response
 case $response in
   [yY])
   echo ""
   cecho "Performing update..." $yellow
-  apt-get update
-  sleep 2s
+  echo "sudo apt-get update" >> ~/rpi_bslog.txt #log
+  sudo apt-get update
+  sleep 1s
   echo ""
   cecho "Performing upgrade..." $yellow
-  apt-get upgrade
+  echo "sudo apt-get upgrade" >> ~/rpi_bslog.txt #log
+  sudo apt-get upgrade
   break;;
   *) break;;
 esac
 
 echo ""
 cecho "===================================================" $white
-cecho "Read more about this setup on my blog:" $green
+cecho "Read more about this setup on my blog:" $blue
 cecho "http://blog.thibmaekelbergh.be" $green
 echo ""
-cecho "Search for topics related to Raspberry Pi or:" $green
+cecho "Search for topics related to Raspberry Pi or:" $blue
 cecho "* http://blog.thibmaekelbergh.be/supercharging-the-raspberry-pi-for-terminal" $green
 cecho "* http://blog.thibmaekelbergh.be/i-got-a-raspberry-pi-heres-how-i-configured-it" $green
 cecho "* https://github.com/thibmaek/raspi-dotfiles" $green
 echo ""
-cecho "Special thanks to http://brandonb.io for his boostrapping script" $green
+cecho "Special thanks to http://brandonb.io for his boostrapping script" $blue
+cecho "Auto-reload the shell? (y/n)" $red
 cecho "===================================================" $white
+read -r response
+case $response in
+  [yY])
+  exec $SHELL -l
+  *) break;;
