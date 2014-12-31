@@ -116,16 +116,10 @@ cecho "===================================================" $white
 read -r response
 case $response in
   [yY])
-    packages=(
-      apache2
-      php5
-      libapache2-mod-php5
-      mysql
-    )
     echo ""
     cecho "Installing all packages..." $yellow
-    echo "apt-get install ${packages[@]}" >> ~/rpi_bslog.txt #log
-    sudo apt-get install ${packages[@]}
+    echo "sudo apt-get install apache2 php5 libapache2-mod-php5 php5-mysql" >> ~/rpi_bslog.txt #log
+    sudo apt-get install apache2 php5 libapache2-mod-php5 php5-mysql
   break;;
   *) break;;
 esac
@@ -161,15 +155,10 @@ cecho "===================================================" $white
 read -r response
 case $response in
   [yY])
-  node_modules=(
-    bower
-    gulp
-    grunt
-  )
   echo ""
   cecho "Installing modules… Takes a while, don't shut down" $yellow
-  echo "sudo npm install -g ${node_modules[@]}" >> ~/rpi_bslog.txt #log
-  sudo npm install -g ${node_modules[@]}
+  echo "sudo npm install -g bower gulp grunt" >> ~/rpi_bslog.txt #log
+  sudo npm install -g bower gulp grunt
   break;;
   *) break;;
 esac
