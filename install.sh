@@ -42,7 +42,7 @@ cecho "===================================================" $white
 read -r response
 case $response in
   [yY])
-    if [-f ~/.hushlogin]; then
+    if [ -f ~/.hushlogin ]; then
       cecho '.hushlogin is already in ~' $green
     else
       echo ""
@@ -62,7 +62,7 @@ cecho "===================================================" $white
 read -r response
 case $response in
   [yY])
-    if [-f ~/.bash_aliases]; then
+    if [ -f ~/.bash_aliases ]; then
       cecho ".bash_aliases is already in ~" $green
     else
       echo ""
