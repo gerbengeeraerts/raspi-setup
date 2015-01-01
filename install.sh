@@ -9,7 +9,6 @@ blue='\033[0;34m'
 magenta='\033[0;35m'
 cyan='\033[0;36m'
 
-
 alias Reset="tput sgr0" #Reset text attributes to default without clearing screen.
 
 # Color-echo.
@@ -43,10 +42,14 @@ cecho "===================================================" $white
 read -r response
 case $response in
   [yY])
-    echo ""
-    cecho "Creating .hushlogin in ~/" $yellow
-    echo "touch ~/.hushlogin" > ~/rpi_bslog.txt # log
-    touch ~/.hushlogin
+    if [-f ~/.hushlogin];
+      cecho '.hushlogin is already in ~' $green
+    else
+      echo ""
+      cecho "Creating .hushlogin in ~/" $yellow
+      echo "touch ~/.hushlogin" > ~/rpi_bslog.txt # log
+      touch ~/.hushlogin
+    fi
     sleep 1s
     break;;
   *) break;;
@@ -59,17 +62,20 @@ cecho "===================================================" $white
 read -r response
 case $response in
   [yY])
-    echo ""
-    cecho "Creating .bash_aliases in ~/" $yellow
-    echo "touch ~/.bash_aliases" >> ~/rpi_bslog.txt # log
-    touch ~/.bash_aliases
-
-    echo ""
-    cecho "Writing sudo apt-get alias to file..." $yellow
-    echo "alias apt-get=\"sudo apt-get\"" > ~/.bash_aliases
-    sleep 1s
-    cecho "Writing al alias for editing aliasfile to file..." $yellow
-    echo "alias al=\"nano ~/.bash_aliases\"" >> ~/.bash_aliases
+    if [-f ~/.bash_aliases];
+      cecho ".bash_aliases is already in ~" $green
+    else
+      echo ""
+      cecho "Creating .bash_aliases in ~/" $yellow
+      echo "touch ~/.bash_aliases" >> ~/rpi_bslog.txt # log
+      touch ~/.bash_aliases
+      echo ""
+      cecho "Writing sudo apt-get alias to file..." $yellow
+      echo "alias apt-get=\"sudo apt-get\"" > ~/.bash_aliases
+      sleep 1s
+      cecho "Writing al alias for editing aliasfile to file..." $yellow
+      echo "alias al=\"nano ~/.bash_aliases\"" >> ~/.bash_aliases
+    fi
     sleep 1s
     break;;
   *) break;;
@@ -83,12 +89,12 @@ read -r response
 case $response in
   [yY])
     echo ""
-    cecho "Installing avahi" $yellow
-    echo "sudo apt-get install avahi-daemon" >> ~/rpi_bslog.txt #log
-    sudo apt-get install avahi-daemon
+    cecho "Installing avahi…" $yellow
+    echo "sudo apt-get install -y avahi-daemon" >> ~/rpi_bslog.txt #log
+    sudo apt-get install -y avahi-daemon
     sleep 2s
-    echo "sudo apt-get install netatalk" >> ~/rpi_bslog.txt #log
-    sudo apt-get install netatalk
+    echo "sudo apt-get -y install netatalk…" >> ~/rpi_bslog.txt #log
+    sudo apt-get install -y netatalk
     break;;
   *) break;;
 esac
@@ -101,9 +107,9 @@ read -r response
 case $response in
   [yY])
     echo ""
-    cecho "Installing pip3..." $yellow
-    echo "sudo apt-get install python3-pip" >> ~/rpi_bslog.txt #log
-    sudo apt-get install python3-pip
+    cecho "Installing pip3…" $yellow
+    echo "sudo apt-get install -y python3-pip" >> ~/rpi_bslog.txt #log
+    sudo apt-get install -y python3-pip
     break;;
   *) break;;
 esac
@@ -111,15 +117,15 @@ esac
 echo ""
 cecho "===================================================" $white
 cecho "Install the standard webstack (y/n)" $blue
-cecho "(apache2 / php5 / libapache2-mod-php5 / mysql)" $blue
+cecho "(apache2 / php5 / libapache2-mod-php5 / php5-mysql)" $blue
 cecho "===================================================" $white
 read -r response
 case $response in
   [yY])
     echo ""
-    cecho "Installing all packages..." $yellow
-    echo "sudo apt-get install apache2 php5 libapache2-mod-php5 php5-mysql" >> ~/rpi_bslog.txt #log
-    sudo apt-get install apache2 php5 libapache2-mod-php5 php5-mysql
+    cecho "Installing apache, php and mysql packages…" $yellow
+    echo "sudo apt-get install -y apache2 php5 libapache2-mod-php5 php5-mysql" >> ~/rpi_bslog.txt #log
+    sudo apt-get install -y apache2 php5 libapache2-mod-php5 php5-mysql
   break;;
   *) break;;
 esac
@@ -157,8 +163,8 @@ case $response in
   [yY])
   echo ""
   cecho "Installing modules… Takes a while, don't shut down" $yellow
-  echo "sudo npm install -g bower gulp grunt" >> ~/rpi_bslog.txt #log
-  sudo npm install -g bower gulp grunt
+  echo "sudo npm install -g bower gulp grunt vtop" >> ~/rpi_bslog.txt #log
+  sudo npm install -g bower gulp grunt vtop
   break;;
   *) break;;
 esac
@@ -173,14 +179,14 @@ read -r response
 case $response in
   [yY])
   echo ""
-  cecho "Performing update..." $yellow
+  cecho "Performing update…" $yellow
   echo "sudo apt-get update" >> ~/rpi_bslog.txt #log
-  sudo apt-get update
+  sudo apt-get -y update
   sleep 1s
   echo ""
-  cecho "Performing upgrade..." $yellow
+  cecho "Performing upgrade…" $yellow
   echo "sudo apt-get upgrade" >> ~/rpi_bslog.txt #log
-  sudo apt-get upgrade
+  sudo apt-get -y upgrade
   break;;
   *) break;;
 esac
@@ -188,12 +194,8 @@ esac
 echo ""
 cecho "===================================================" $white
 cecho "Read more about this setup on my blog:" $blue
-cecho "http://blog.thibmaekelbergh.be" $green
-echo ""
-cecho "Search for topics related to Raspberry Pi or:" $blue
+cecho "* http://blog.thibmaekelbergh.be" $green
 cecho "* http://blog.thibmaekelbergh.be/supercharging-the-raspberry-pi-for-terminal" $green
-cecho "* http://blog.thibmaekelbergh.be/i-got-a-raspberry-pi-heres-how-i-configured-it" $green
-cecho "* https://github.com/thibmaek/raspi-dotfiles" $green
 echo ""
 cecho "Special thanks to http://brandonb.io for his boostrapping script" $blue
 cecho "Auto-reload the shell? (y/n)" $red
@@ -203,3 +205,4 @@ case $response in
   [yY])
   exec $SHELL -l
   *) break;;
+esac
