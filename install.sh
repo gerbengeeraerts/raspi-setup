@@ -91,10 +91,10 @@ case $response in
     echo ""
     cecho "Installing avahi…" $yellow
     echo "sudo apt-get install -y avahi-daemon" >> ~/rpi_bslog.txt #log
-    sudo apt-get install -y avahi-daemon
+    sudo apt-get install -y avahi-daemon >/dev/null 2>&1
     sleep 2s
     echo "sudo apt-get -y install netatalk…" >> ~/rpi_bslog.txt #log
-    sudo apt-get install -y netatalk
+    sudo apt-get install -y netatalk >/dev/null 2>&1
     break;;
   *) break;;
 esac
@@ -109,7 +109,7 @@ case $response in
     echo ""
     cecho "Installing pip3…" $yellow
     echo "sudo apt-get install -y python3-pip" >> ~/rpi_bslog.txt #log
-    sudo apt-get install -y python3-pip
+    sudo apt-get install -y python3-pip >/dev/null 2>&1
     break;;
   *) break;;
 esac
@@ -125,7 +125,7 @@ case $response in
     echo ""
     cecho "Installing apache, php and mysql packages…" $yellow
     echo "sudo apt-get install -y apache2 php5 libapache2-mod-php5 php5-mysql" >> ~/rpi_bslog.txt #log
-    sudo apt-get install -y apache2 php5 libapache2-mod-php5 php5-mysql
+    sudo apt-get install -y apache2 php5 libapache2-mod-php5 php5-mysql >/dev/null 2>&1
   break;;
   *) break;;
 esac
@@ -163,8 +163,8 @@ case $response in
   [yY])
   echo ""
   cecho "Installing modules… Takes a while, don't shut down" $yellow
-  echo "sudo npm install -g bower gulp grunt vtop" >> ~/rpi_bslog.txt #log
-  sudo npm install -g bower gulp grunt vtop
+  echo "sudo npm install -g bower gulp grunt node-gyp vtop" >> ~/rpi_bslog.txt #log
+  sudo npm install -g bower gulp grunt vtop >/dev/null 2>&1
   break;;
   *) break;;
 esac
