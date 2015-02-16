@@ -30,7 +30,6 @@ case $response in
     echo ""
     cecho "Logging setup to rpi_bslog.txt in ~/" $yellow
     touch ~/rpi_bslog.txt # log
-    sleep 1s
     break;;
   *) break;;
 esac
@@ -50,7 +49,6 @@ case $response in
       echo "touch ~/.hushlogin" > ~/rpi_bslog.txt # log
       touch ~/.hushlogin
     fi
-    sleep 1s
     break;;
   *) break;;
 esac
@@ -72,11 +70,9 @@ case $response in
       echo ""
       cecho "Writing sudo apt-get alias to file..." $yellow
       echo "alias apt-get=\"sudo apt-get\"" > ~/.bash_aliases
-      sleep 1s
       cecho "Writing al alias for editing aliasfile to file..." $yellow
       echo "alias al=\"nano ~/.bash_aliases\"" >> ~/.bash_aliases
     fi
-    sleep 1s
     break;;
   *) break;;
 esac
@@ -92,10 +88,33 @@ case $response in
     cecho "Installing avahi…" $yellow
     echo "sudo apt-get install -y avahi-daemon" >> ~/rpi_bslog.txt #log
     sudo apt-get install -y avahi-daemon >/dev/null 2>&1
-    sleep 2s
     echo "sudo apt-get -y install netatalk…" >> ~/rpi_bslog.txt #log
     sudo apt-get install -y netatalk >/dev/null 2>&1
     break;;
+  *) break;;
+esac
+
+echo ""
+cecho "===================================================" $white
+cecho "Install vnc server - tightvnc? (y/n)" $blue
+cecho "===================================================" $white
+case $response in
+  [yY])
+  echo ""
+  cecho "Installing tightvncserver" $yellow
+  echo "sudo apt-get install -y avahi-daemon" >> ~/rpi_bslog.txt #log
+  sudo apt-get install tightvncserver -y >/dev/null 2>&1
+  echo "Adding a 1400x900 vnc to boot in /etc/init.d/runvncboot" >> ~/rpi_bslog.txt #log
+  cecho "Adding a 1400x900 vnc to boot in /etc/init.d/runvncboot" $yellow
+  cd /etc/init.d
+  sudo touch runvncboot
+  sudo chmod 755 runvncboot
+  sudo echo "#! /bin/sh" > runvncboot
+  sudo echo "vncserver -geometry 1400x900 -depth 24" >> runvncboot
+  sudo chmod +x runvncboot
+  sudo ln -s /etc/init.d/vncboot /etc/rc.d
+  cd
+  break;;
   *) break;;
 esac
 
@@ -145,7 +164,7 @@ case $response in
   echo "sudo dpkg -i tmp/node_latest_armhf.deb" >> ~/rpi_bslog.txt #log
   sudo dpkg -i tmp/node_latest_armhf.deb
   cecho "Checking if install worked. If no version number" $yellow
-  cecho "is listed, install failed."
+  cecho "is listed, install failed." $yellow
   echo "node -v" >> ~/rpi_bslog.txt #log
   node -v
   sleep 2s
@@ -172,21 +191,19 @@ esac
 echo ""
 cecho "===================================================" $white
 cecho "Update and upgrade rpi? (y/n)" $blue
-cecho "This will overwrite custom kernel" $red
 cecho "Restart your rpi when done" $red
 cecho "===================================================" $white
 read -r response
 case $response in
   [yY])
   echo ""
-  cecho "Performing update…" $yellow
+  cecho "Performing update… (takes a while)" $yellow
   echo "sudo apt-get update" >> ~/rpi_bslog.txt #log
-  sudo apt-get -y update
-  sleep 1s
+  sudo apt-get -y update >/dev/null 2>&1
   echo ""
-  cecho "Performing upgrade…" $yellow
+  cecho "Performing upgrade… (takes a while)" $yellow
   echo "sudo apt-get upgrade" >> ~/rpi_bslog.txt #log
-  sudo apt-get -y upgrade
+  sudo apt-get -y upgrade >/dev/null 2>&1
   break;;
   *) break;;
 esac
