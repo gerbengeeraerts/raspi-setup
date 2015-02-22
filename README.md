@@ -1,4 +1,4 @@
-#raspi-setup
+# raspi-setup
 > A boostrapping script for a simple raspi setup.
 
 ## Packages included
@@ -9,7 +9,7 @@
 * Common node modules
 
 * Update & upgrade
-* Basic dotfiles creation (see my raspi-dotfiles repo)
+* Basic dotfiles creation (see my [raspi-dotfiles](https://github.com/thibmaek/raspi-dotfiles) repo)
 
 ## Installing
 Either copy this file over to your raspi or clone this repo.  
@@ -20,7 +20,6 @@ with `chmod +x install.sh` and run again.
 
 Let the script run and install dependencies & packages.  
 Be sure to reboot afterwards for upgrade & update changes!
-Everything is logged to rpi_bslog.txt in your home directory
 
 ### Credits
 Credit to Brandon Brown for his great bootstrapping script

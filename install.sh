@@ -22,57 +22,19 @@ cecho() {
 
 echo ""
 cecho "===================================================" $white
-cecho "Create a log for commands executed in this setup? (y/n)" $blue
+cecho "Download and install dotfiles? (y/n)" $blue
 cecho "===================================================" $white
 read -r response
 case $response in
   [yY])
-    echo ""
-    cecho "Logging setup to rpi_bslog.txt in ~/" $yellow
-    touch ~/rpi_bslog.txt # log
-    break;;
-  *) break;;
-esac
-
-echo ""
-cecho "===================================================" $white
-cecho "Disable login message on SSH connection? (y/n)" $blue
-cecho "===================================================" $white
-read -r response
-case $response in
-  [yY])
-    if [ -f ~/.hushlogin ]; then
-      cecho '.hushlogin is already in ~' $green
-    else
-      echo ""
-      cecho "Creating .hushlogin in ~/" $yellow
-      echo "touch ~/.hushlogin" > ~/rpi_bslog.txt # log
-      touch ~/.hushlogin
-    fi
-    break;;
-  *) break;;
-esac
-
-echo ""
-cecho "===================================================" $white
-cecho "Create an aliases file? (y/n)" $blue
-cecho "===================================================" $white
-read -r response
-case $response in
-  [yY])
-    if [ -f ~/.bash_aliases ]; then
-      cecho ".bash_aliases is already in ~" $green
-    else
-      echo ""
-      cecho "Creating .bash_aliases in ~/" $yellow
-      echo "touch ~/.bash_aliases" >> ~/rpi_bslog.txt # log
-      touch ~/.bash_aliases
-      echo ""
-      cecho "Writing sudo apt-get alias to file..." $yellow
-      echo "alias apt-get=\"sudo apt-get\"" > ~/.bash_aliases
-      cecho "Writing al alias for editing aliasfile to file..." $yellow
-      echo "alias al=\"nano ~/.bash_aliases\"" >> ~/.bash_aliases
-    fi
+    cd #make sure we're home
+    cecho "Cloning dotfile repo" $yellow
+    git clone https://github.com/thibmaek/raspi-dotfiles dotfiles #clone repo
+    cd dotfiles #enter repo folder
+    chmod +x make.sh #make the builder executable if not already so
+    ./make.sh #run the builder
+    cd #go back home
+    rm -rf dotfiles #remove the folder
     break;;
   *) break;;
 esac
@@ -86,10 +48,9 @@ case $response in
   [yY])
     echo ""
     cecho "Installing avahi…" $yellow
-    echo "sudo apt-get install -y avahi-daemon" >> ~/rpi_bslog.txt #log
-    sudo apt-get install -y avahi-daemon >/dev/null 2>&1
-    echo "sudo apt-get -y install netatalk…" >> ~/rpi_bslog.txt #log
-    sudo apt-get install -y netatalk >/dev/null 2>&1
+    sudo apt-get install -y avahi-daemon > /dev/null 2>&1
+    cecho "Installing netatalk" $yellow
+    sudo apt-get install -y netatalk > /dev/null 2>&1
     break;;
   *) break;;
 esac
@@ -102,9 +63,7 @@ case $response in
   [yY])
   echo ""
   cecho "Installing tightvncserver" $yellow
-  echo "sudo apt-get install -y avahi-daemon" >> ~/rpi_bslog.txt #log
-  sudo apt-get install tightvncserver -y >/dev/null 2>&1
-  echo "Adding a 1400x900 vnc to boot in /etc/init.d/runvncboot" >> ~/rpi_bslog.txt #log
+  sudo apt-get install tightvncserver -y > /dev/null 2>&1
   cecho "Adding a 1400x900 vnc to boot in /etc/init.d/runvncboot" $yellow
   cd /etc/init.d
   sudo touch runvncboot
@@ -127,8 +86,7 @@ case $response in
   [yY])
     echo ""
     cecho "Installing pip3…" $yellow
-    echo "sudo apt-get install -y python3-pip" >> ~/rpi_bslog.txt #log
-    sudo apt-get install -y python3-pip >/dev/null 2>&1
+    sudo apt-get install -y python3-pip > /dev/null 2>&1
     break;;
   *) break;;
 esac
@@ -143,8 +101,7 @@ case $response in
   [yY])
     echo ""
     cecho "Installing apache, php and mysql packages…" $yellow
-    echo "sudo apt-get install -y apache2 php5 libapache2-mod-php5 php5-mysql" >> ~/rpi_bslog.txt #log
-    sudo apt-get install -y apache2 php5 libapache2-mod-php5 php5-mysql >/dev/null 2>&1
+    sudo apt-get install -y apache2 php5 libapache2-mod-php5 php5-mysql > /dev/null 2>&1
   break;;
   *) break;;
 esac
@@ -158,14 +115,11 @@ case $response in
   [yY])
   echo ""
   cecho "Downloading latest package from node-arm…" $yellow
-  echo "wget -P /tmp http://node-arm.herokuapp.com/node_latest_armhf.deb" >> ~/rpi_bslog.txt #log
-  wget -P /tmp http://node-arm.herokuapp.com/node_latest_armhf.deb
+  wget -qq -P /tmp http://node-arm.herokuapp.com/node_latest_armhf.deb
   cecho "Unpacking and installing package…" $yellow
-  echo "sudo dpkg -i tmp/node_latest_armhf.deb" >> ~/rpi_bslog.txt #log
   sudo dpkg -i tmp/node_latest_armhf.deb
   cecho "Checking if install worked. If no version number" $yellow
   cecho "is listed, install failed." $yellow
-  echo "node -v" >> ~/rpi_bslog.txt #log
   node -v
   sleep 2s
   cecho "Installing npm completion for bash… (in .bash_profile)" $yellow
@@ -184,8 +138,7 @@ case $response in
   [yY])
   echo ""
   cecho "Installing modules… Takes a while, don't shut down" $yellow
-  echo "sudo npm install -g bower gulp grunt node-gyp vtop" >> ~/rpi_bslog.txt #log
-  sudo npm install -g bower gulp grunt vtop >/dev/null 2>&1
+  sudo npm install -g bower gulp grunt vtop > /dev/null 2>&1
   break;;
   *) break;;
 esac
@@ -200,12 +153,10 @@ case $response in
   [yY])
   echo ""
   cecho "Performing update… (takes a while)" $yellow
-  echo "sudo apt-get update" >> ~/rpi_bslog.txt #log
-  sudo apt-get -y update >/dev/null 2>&1
+  sudo apt-get -y update > /dev/null 2>&1
   echo ""
   cecho "Performing upgrade… (takes a while)" $yellow
-  echo "sudo apt-get upgrade" >> ~/rpi_bslog.txt #log
-  sudo apt-get -y upgrade >/dev/null 2>&1
+  sudo apt-get -y upgrade > /dev/null 2>&1
   break;;
   *) break;;
 esac
@@ -222,6 +173,6 @@ cecho "===================================================" $white
 read -r response
 case $response in
   [yY])
-  exec $SHELL -l
+  exit 0
   *) break;;
 esac
