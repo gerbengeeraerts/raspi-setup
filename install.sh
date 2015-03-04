@@ -118,7 +118,7 @@ case $response in
   cecho "Downloading latest package from node-arm…" $yellow
   wget -qq -P /tmp http://node-arm.herokuapp.com/node_latest_armhf.deb
   cecho "Unpacking and installing package…" $yellow
-  sudo dpkg -i tmp/node_latest_armhf.deb
+  sudo dpkg -i /tmp/node_latest_armhf.deb
   cecho "Checking if install worked. If no version number" $yellow
   cecho "is listed, install failed." $yellow
   node -v
@@ -140,6 +140,19 @@ case $response in
   echo ""
   cecho "Installing modules… Takes a while, don't shut down" $yellow
   sudo npm install -g bower gulp grunt vtop > /dev/null 2>&1
+  break;;
+  *) break;;
+esac
+
+echo ""
+cecho "===================================================" $white
+cecho "Remove wolfram-engine? (y/n)" $blue
+cecho "===================================================" $white
+read -r response
+case $response in
+  [yY])
+  echo "removing wolfram-engine…" $yellow
+  sudo apt-get purge -y wolfram-engine
   break;;
   *) break;;
 esac
