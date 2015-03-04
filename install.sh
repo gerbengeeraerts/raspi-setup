@@ -59,6 +59,7 @@ echo ""
 cecho "===================================================" $white
 cecho "Install vnc server - tightvnc? (y/n)" $blue
 cecho "===================================================" $white
+read -r response
 case $response in
   [yY])
   echo ""
