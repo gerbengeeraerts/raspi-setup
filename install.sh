@@ -29,12 +29,11 @@ case $response in
   [yY])
     cd #make sure we're home
     cecho "Cloning dotfile repo" $yellow
-    git clone https://github.com/thibmaek/raspi-dotfiles dotfiles #clone repo
-    cd dotfiles #enter repo folder
+    git clone https://github.com/thibmaek/raspi-dotfiles df #clone repo
+    cd df #enter repo folder
     chmod +x make.sh #make the builder executable if not already so
     ./make.sh #run the builder
     cd #go back home
-    rm -rf dotfiles #remove the folder
     break;;
   *) break;;
 esac
@@ -102,7 +101,7 @@ case $response in
   [yY])
     echo ""
     cecho "Installing apache, php and mysql packages…" $yellow
-    sudo apt-get install -y apache2 php5 libapache2-mod-php5 php5-mysql > /dev/null 2>&1
+    sudo apt-get install -y apache2 php5 libapache2-mod-php5 php5-mysql mysql-server mysql-server-5.5> /dev/null 2>&1
   break;;
   *) break;;
 esac
@@ -171,6 +170,19 @@ case $response in
   echo ""
   cecho "Performing upgrade… (takes a while)" $yellow
   sudo apt-get -y upgrade > /dev/null 2>&1
+  break;;
+  *) break;;
+esac
+
+echo ""
+cecho "===================================================" $white
+cecho "Upgrade to newer kernel? (y/n)" $blue
+cecho "===================================================" $white
+read -r response
+case $response in
+  [yY])
+  echo ""
+  sudo rpi-update
   break;;
   *) break;;
 esac
