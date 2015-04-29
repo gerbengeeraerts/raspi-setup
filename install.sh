@@ -145,12 +145,26 @@ esac
 
 echo ""
 cecho "===================================================" $white
+cecho "Install htop for system monitoring? (y/n)" $blue
+cecho "===================================================" $white
+read -r response
+case $response in
+  [yY])
+  echo ""
+  sudo apt-get install -y htop
+  break;;
+  *) break;;
+esac
+
+echo ""
+cecho "===================================================" $white
 cecho "Remove wolfram-engine? (y/n)" $blue
 cecho "===================================================" $white
 read -r response
 case $response in
   [yY])
-  echo "removing wolfram-engine…" $yellow
+  echo ""
+  cecho "removing wolfram-engine…" $yellow
   sudo apt-get purge -y wolfram-engine
   break;;
   *) break;;
