@@ -123,7 +123,6 @@ case $response in
   node -v
   sleep 2s
   cecho "Installing npm completion for bash… (in .bash_profile)" $yellow
-  echo "source ~/.nvm/v0.10.32/lib/node_modules/npm/lib/utils/completion.sh" >> ~/.bash_profile
   break;;
   *) break;;
 esac
