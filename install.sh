@@ -211,7 +211,5 @@ cecho "Auto-reload the shell? (y/n)" $red
 cecho "===================================================" $white
 read -r response
 case $response in
-  [yY])
-  exit 0
-  *) break;;
+  *) ;;
 esac
