@@ -21,5 +21,4 @@ with `chmod +x install.sh` and run again.
 Let the script run and install dependencies & packages.  
 Be sure to reboot afterwards for upgrade & update changes!
 
-### Credits
-Credit to Brandon Brown for his great bootstrapping script
+> Check the develop branch for a more modular plug'n play approach. 
