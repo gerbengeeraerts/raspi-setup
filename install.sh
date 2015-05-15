@@ -150,7 +150,7 @@ read -r response
 case $response in
   [yY])
   echo ""
-  sudo apt-get install -y htop
+  sudo apt-get install -y htop > /dev/null 2>&1
   break;;
   *) break;;
 esac
@@ -164,7 +164,7 @@ case $response in
   [yY])
   echo ""
   cecho "removing wolfram-engine…" $yellow
-  sudo apt-get purge -y wolfram-engine
+  sudo apt-get purge -y wolfram-engine > /dev/null 2>&1
   break;;
   *) break;;
 esac
