@@ -20,6 +20,11 @@ cecho() {
   return
 }
 
+cecho "===================================================" $white
+echo "Instaling git first…"
+cecho "===================================================" $white
+sudo apt-get install git > /dev/null 2>&1
+
 echo ""
 cecho "===================================================" $white
 cecho "Download and install dotfiles? (y/n)" $blue
