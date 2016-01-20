@@ -176,6 +176,20 @@ esac
 
 echo ""
 cecho "===================================================" $white
+cecho "Remove LibreOffice (Jessie only)? (y/n)" $blue
+cecho "===================================================" $white
+read -r response
+case $response in
+  [yY])
+  echo ""
+  cecho "removing wolfram-engine…" $yellow
+  sudo apt-get purge -y libreoffice- > /dev/null 2>&1
+  break;;
+  *) break;;
+esac
+
+echo ""
+cecho "===================================================" $white
 cecho "Update and upgrade rpi? (y/n)" $blue
 cecho "Restart your rpi when done" $red
 cecho "===================================================" $white
