@@ -1,24 +1,10 @@
 # raspi-setup
 > A boostrapping script for a simple raspi setup.
 
-## Packages included
-* Avahi & Netatalk
-* Webstack: apache2, php5, mysql
-* pip3
-* Compiled version of node & npm
-* Common node modules
-
-* Update & upgrade
-* Basic dotfiles creation (see my [raspi-dotfiles](https://github.com/thibmaek/raspi-dotfiles) repo)
-
 ## Installing
-Either copy this file over to your raspi or clone this repo.  
-It's recommended to copy or clone it in the homedir `cd ~`  
+Import install.xml into [PiBakery](https://github.com/davidferguson/pibakery)
 
-Run `sudo ./install.sh`, if file is not executable, chmod it  
-with `chmod +x install.sh` and run again.
+## Issues with this branch
+This branch currently uses PiBakery instead of just setting this up in bash script as the master & develop do.
 
-Let the script run and install dependencies & packages.  
-Be sure to reboot afterwards for upgrade & update changes!
-
-> Check the develop branch for a more modular plug'n play approach. 
+PiBakery makes it a ton easier to set up while keeping overview in the GUI it offers. Currently I'm holding off the boat to merge this branch because of [this issue](https://github.com/davidferguson/pibakery/issues/7) that would error the 
