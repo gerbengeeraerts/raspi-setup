@@ -1,5 +1,5 @@
 # raspi-setup
-> A boostrapping script for a simple raspi setup.
+> A bootstrapping script for a simple raspi setup.
 
 ## Packages included
 * Avahi & Netatalk
@@ -21,4 +21,4 @@ with `chmod +x install.sh` and run again.
 Let the script run and install dependencies & packages.  
 Be sure to reboot afterwards for upgrade & update changes!
 
-> Check the develop branch for a more modular plug'n play approach. 
+> Check the develop branch for a more modular plug'n play approach.
