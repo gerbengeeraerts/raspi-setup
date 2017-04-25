@@ -2,14 +2,10 @@
 > A bootstrapping script for a simple raspi setup.
 
 ## Packages included
-* Avahi & Netatalk
 * Webstack: apache2, php5, mysql
 * pip3
 * Compiled version of node & npm
 * Common node modules
-
-* Update & upgrade
-* Basic dotfiles creation (see my [raspi-dotfiles](https://github.com/thibmaek/raspi-dotfiles) repo)
 
 ## Installing
 Either copy this file over to your raspi or clone this repo.  
