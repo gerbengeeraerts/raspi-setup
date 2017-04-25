@@ -25,62 +25,6 @@ echo "Instaling git first…"
 cecho "===================================================" $white
 sudo apt-get install git > /dev/null 2>&1
 
-echo ""
-cecho "===================================================" $white
-cecho "Download and install dotfiles? (y/n)" $blue
-cecho "===================================================" $white
-read -r response
-case $response in
-  [yY])
-    cd #make sure we're home
-    cecho "Cloning dotfile repo" $yellow
-    git clone https://github.com/thibmaek/raspi-dotfiles df #clone repo
-    cd df #enter repo folder
-    chmod +x make.sh #make the builder executable if not already so
-    ./make.sh #run the builder
-    cd #go back home
-    break;;
-  *) break;;
-esac
-
-echo ""
-cecho "===================================================" $white
-cecho "Install netatalk and avahi? (y/n)" $blue
-cecho "===================================================" $white
-read -r response
-case $response in
-  [yY])
-    echo ""
-    cecho "Installing avahi…" $yellow
-    sudo apt-get install -y avahi-daemon > /dev/null 2>&1
-    cecho "Installing netatalk" $yellow
-    sudo apt-get install -y netatalk > /dev/null 2>&1
-    break;;
-  *) break;;
-esac
-
-echo ""
-cecho "===================================================" $white
-cecho "Install vnc server - tightvnc? (y/n)" $blue
-cecho "===================================================" $white
-read -r response
-case $response in
-  [yY])
-  echo ""
-  cecho "Installing tightvncserver" $yellow
-  sudo apt-get install tightvncserver -y > /dev/null 2>&1
-  cecho "Adding a 1400x900 vnc to boot in /etc/init.d/runvncboot" $yellow
-  cd /etc/init.d
-  sudo touch runvncboot
-  sudo chmod 755 runvncboot
-  sudo echo "#! /bin/sh" > runvncboot
-  sudo echo "vncserver -geometry 1400x900 -depth 24" >> runvncboot
-  sudo chmod +x runvncboot
-  sudo ln -s /etc/init.d/vncboot /etc/rc.d
-  cd
-  break;;
-  *) break;;
-esac
 
 echo ""
 cecho "===================================================" $white
@@ -142,7 +86,7 @@ case $response in
   [yY])
   echo ""
   cecho "Installing modules… Takes a while, don't shut down" $yellow
-  sudo npm install -g bower gulp grunt vtop > /dev/null 2>&1
+  sudo npm install -g gulp grunt  > /dev/null 2>&1
   break;;
   *) break;;
 esac
@@ -156,34 +100,6 @@ case $response in
   [yY])
   echo ""
   sudo apt-get install -y htop > /dev/null 2>&1
-  break;;
-  *) break;;
-esac
-
-echo ""
-cecho "===================================================" $white
-cecho "Remove wolfram-engine? (y/n)" $blue
-cecho "===================================================" $white
-read -r response
-case $response in
-  [yY])
-  echo ""
-  cecho "removing wolfram-engine…" $yellow
-  sudo apt-get purge -y wolfram-engine > /dev/null 2>&1
-  break;;
-  *) break;;
-esac
-
-echo ""
-cecho "===================================================" $white
-cecho "Remove LibreOffice (Jessie only)? (y/n)" $blue
-cecho "===================================================" $white
-read -r response
-case $response in
-  [yY])
-  echo ""
-  cecho "removing wolfram-engine…" $yellow
-  sudo apt-get purge -y libreoffice- > /dev/null 2>&1
   break;;
   *) break;;
 esac
@@ -221,9 +137,8 @@ esac
 
 echo ""
 cecho "===================================================" $white
-cecho "Read more about this setup on my blog:" $blue
+cecho "Original Setup repo by Thibmaek:" $blue
 cecho "* http://blog.thibmaekelbergh.be" $green
-cecho "* http://blog.thibmaekelbergh.be/supercharging-the-raspberry-pi-for-terminal" $green
 echo ""
 cecho "Special thanks to http://brandonb.io for his boostrapping script" $blue
 cecho "Auto-reload the shell? (y/n)" $red
